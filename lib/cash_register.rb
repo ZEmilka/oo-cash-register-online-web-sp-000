@@ -7,20 +7,32 @@ class CashRegister
     @item=[]
   end
 
-  def add_item(price, item, quantity=1)
-    self.total += price * quantity
-    quantity.times { self.items << name }
-    self.last_transaction = [name, price, quantity]
+  def add_item(price, items, quantity=1)
+    @price=price
+    @total+=price*quantity
+    if quantity>1
+      count=0
+    while count<quantity
+      @item<<items
+      count+=1
+    end
+    else
+      @item<<items
+    end
   end
 
   def apply_discount
-    self.total == 0 ? "There is no discount to apply." : "After the discount, the total comes to $#{self.total = self.total * 8 / 10 }."
+    if @discount > 0
+      @to_take_off = (price * discount)/100
+      @total -= @to_take_off
+      return "After the discount, the total comes to $#{total}."
+    else
+      return "There is no discount to apply."
+    end
   end
 
   def void_last_transaction
-   self.total -= self.last_transaction[1] * self.last_transaction[2]
-   self.last_transaction[2].times do
-   self.items.delete_at(self.items.index(self.last_transaction[0]) || self.items.count)
+    @total -= @price
   end
 
 end
